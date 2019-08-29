@@ -1,0 +1,46 @@
+{
+  "name": "frontend-sample-app",
+  "version": "1.1.0",
+  "main": "./dist/main.js",
+  "license": "UNLICENSED",
+  "description": "Generated project - frontend-sample-app",
+  "bin": {
+    "server": "./dist/main.js"
+  },
+  "pkg": {
+    "targets": [
+      "latest-macos-x64",
+      "latest-linux-x64",
+      "latest-alpine-x64",
+      "latest-win-x64"
+    ]
+  },
+  "scripts": {
+    "start": "node ./dist/main.js",
+    "build": "npm run-script test && npm run-script clean && npm run-script lint && npm run-script compile",
+    "compile": "tsc -p ./tsconfig.build.json",
+    "pkg": "npm run-script build && pkg . --output ./bin/server",
+    "test": "jest --detectOpenHandles",
+    "lint": "tslint -c ./tslint.json -p tsconfig.json",
+    "clean": "rimraf dist && rimraf bin",
+    "deploy": "npm run-script lint && npm run-script build && npm publish --access public",
+    "docker-build": "npm run-script build && docker build -t frontend-sample-app:$npm_package_version ."
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.2",
+    "@types/pino": "^5.8.9",
+    "@types/supertest": "^2.0.8",
+    "supertest": "^4.0.2",
+    "jest": "^24.9.0",
+    "pkg": "^4.4.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
+  },
+  "dependencies": {
+    "@msiviero/knit": "^2.0.0"
+  }
+}
