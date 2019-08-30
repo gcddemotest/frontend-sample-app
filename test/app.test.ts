@@ -1,27 +1,25 @@
 import { Container, HttpServer, Scope } from "@msiviero/knit";
 import * as supertest from "supertest";
-import { Hello } from "../src/api/hello";
+import { Api } from "../src/api/api";
 import { Service } from "../src/service/service";
 
 describe("Http server custom instance", () => {
 
   const container = new Container()
-    .register(Hello, Scope.Singleton)
+    .register(Api, Scope.Singleton)
     .register(Service, Scope.Singleton);
 
   const httpServer = new HttpServer(container)
-    .api(Hello);
+    .api(Api);
 
   beforeAll(() => httpServer.start({ port: 0 }));
   afterAll(() => httpServer.stop());
 
   it("should register endpoint and serve requests", async () => {
 
-    const response = await supertest(httpServer.getServer())
-      .get("/hello")
+    await supertest(httpServer.getServer())
+      .get("/")
       .expect(200)
-      .expect("Content-Type", "application/json; charset=utf-8");
-
-    expect(response.text).toEqual(JSON.stringify({ hello: "world" }));
+      .expect("Content-Type", "text/plain; charset=utf-8");
   });
 });
